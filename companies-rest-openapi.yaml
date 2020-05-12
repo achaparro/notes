@@ -1,0 +1,160 @@
+components:
+    schemas:
+        Company:
+            # @review
+            properties:
+                active:
+                    readOnly: true
+                    type: boolean
+                companyId:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                defaultCompany:
+                    description:
+                        indicates if it is the default company.
+                    readOnly: true
+                    type: boolean
+                domain:
+                    description:
+                        domain used for email authentication.
+                    readOnly: true
+                    type: string
+                virtualhost:
+                    readOnly: true
+                    type: string
+                webId:
+                    readOnly: true
+                    type: string
+            type: object
+info:
+    description:
+        "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
+        'com.liferay.headless.admin.taxonomy.client', and version '2.0.1'."
+    license:
+        name: Apache 2.0
+        url: http://www.apache.org/licenses/LICENSE-2.0.html
+    title: Liferay Portal Instances Headless API
+    version: v1.0
+openapi: 3.0.1
+paths:
+    /companies:
+        get:
+            description:
+                Retrieves the companies
+            operationId: getCompaniesPage
+            parameters:
+              - name: active
+                in: query
+                required: false
+                style: form
+                explode: true
+                schema:
+                  type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Company"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Company"
+                                type: array
+                    description:
+                        default response
+            # @review
+            tags: ["Company"]
+        post:
+            description:
+                Adds a new company
+            operationId: postCompany
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Company"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Company"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                    description:
+                        default response
+            # @review
+            tags: ["Company"]
+    /companies/{companyId}:
+        get:
+            description:
+                Retrieves the company
+            operationId: getCompany
+            parameters:
+                - in: path
+                  name: companyId
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                    description:
+                        default response
+            # @review
+            tags: ["Company"]
+    /companies/{companyId}/activate:
+        # @review
+        put:
+            description:
+                Activates the company.
+            operationId: putCompanyActivate
+            parameters:
+                - in: path
+                  name: companyId
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    description:
+                        default response
+            tags: ["Company"]
+    /companies/{companyId}/deactivate:
+        # @review
+        put:
+            description:
+                "Deactivates the company. When a company is deactivated, its virtual host will not longer
+                respond requests"
+            operationId: putCompanyDeactivate
+            parameters:
+                - in: path
+                  name: companyId
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    description:
+                        default response
+            tags: ["Company"]
