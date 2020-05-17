@@ -8,23 +8,14 @@ components:
                     type: boolean
                 companyId:
                     format: int64
-                    readOnly: true
                     type: integer
-                defaultCompany:
-                    description:
-                        indicates if it is the default company.
-                    readOnly: true
-                    type: boolean
                 domain:
                     description:
                         domain used for email authentication.
-                    readOnly: true
                     type: string
                 virtualhost:
-                    readOnly: true
                     type: string
                 webId:
-                    readOnly: true
                     type: string
             type: object
 info:
@@ -93,14 +84,33 @@ paths:
                         default response
             # @review
             tags: ["Company"]
-    /companies/{companyId}:
+    /companies/{webId}:
+        delete:
+            description:
+                Removes a company
+            operationId: deleteCompany
+            parameters:
+                - in: path
+                  name: webId
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    description:
+                        ""
+            # @review
+            tags: ["Company"]    
         get:
             description:
                 Retrieves the company
             operationId: getCompany
             parameters:
                 - in: path
-                  name: companyId
+                  name: webId
                   required: true
                   schema:
                       type: string
@@ -117,15 +127,49 @@ paths:
                         default response
             # @review
             tags: ["Company"]
-    /companies/{companyId}/activate:
+        patch:
+            # @review
+            description:
+                Updates the comany with information sent in the request body. Only the provided fields
+                are updated.
+            operationId: patchCompany
+            parameters:
+                - in: path
+                  name: webId
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Company"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Company"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Company"
+                    # @review
+                    description:
+                        "Company successfully updated"
+            # @review
+            tags: ["Company"]            
+    /companies/{webId}/activate:
         # @review
         put:
             description:
-                Activates the company.
+                Activates the company
             operationId: putCompanyActivate
             parameters:
                 - in: path
-                  name: companyId
+                  name: webId
                   required: true
                   schema:
                       type: string
@@ -137,16 +181,16 @@ paths:
                     description:
                         default response
             tags: ["Company"]
-    /companies/{companyId}/deactivate:
+    /companies/{webId}/deactivate:
         # @review
         put:
             description:
-                "Deactivates the company. When a company is deactivated, its virtual host will not longer
-                respond requests"
+                Deactivates the company. When a company is deactivated, its virtual host will not longer
+                respond requests.
             operationId: putCompanyDeactivate
             parameters:
                 - in: path
-                  name: companyId
+                  name: webId
                   required: true
                   schema:
                       type: string
